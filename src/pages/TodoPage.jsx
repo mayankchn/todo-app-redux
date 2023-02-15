@@ -49,13 +49,13 @@ const TodoPage = () => {
     }
 
     let filtTodos = todos
-    if (visibilityFilter === "all") {
+    if (visibilityFilter === "SHOW_ALL") {
         filtTodos = todos
-    } else if (visibilityFilter === "completed") {
+    } else if (visibilityFilter === "SHOW_COMPLETED") {
         filtTodos = todos.filter((todo) => {
             return todo.completed === true;
         })
-    } else if (visibilityFilter === "active") {
+    } else if (visibilityFilter === "SHOW_ACTIVE") {
         filtTodos = todos.filter((todo) => {
             return todo.completed === false;
         })
