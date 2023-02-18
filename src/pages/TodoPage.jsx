@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { todosSelector, visibilityFilterSelector } from "../App";
 import SelectVisibility from "../components/SelectVisibility";
 import TodoList from "../components/TodoList";
 import AddTodo from "../components/AddTodo";
+import { todosSelector, visibilityFilterSelector } from "../selectors";
 
 let id = 0;
 
