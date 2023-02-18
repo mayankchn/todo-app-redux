@@ -1,19 +1,15 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import SelectVisibility from "../components/SelectVisibility";
 import TodoList from "../components/TodoList";
 import AddTodo from "../components/AddTodo";
 import { todosSelector, visibilityFilterSelector } from "../selectors";
+import { addTodoAction, setVisibilityFilterAction, toggleTodoAction } from "../actions";
 
 let id = 0;
 
-const TodoPage = () => {
+const TodoPage = ({ todos, visibilityFilter, addTodo, toggleTodo, setVisibilityFilter }) => {
     const [inputValue, setInputValue] = useState('')
-
-    const dispatch = useDispatch()
-
-    const todos = useSelector(todosSelector)
-    const visibilityFilter = useSelector(visibilityFilterSelector)
 
     const handleInput = (e) => {
         setInputValue(e.target.value)
@@ -21,30 +17,20 @@ const TodoPage = () => {
 
     const addToDo = (e) => {
         e.preventDefault()
+        id = id + 1;
         if (inputValue.trim().length > 0) {
-            dispatch({
-                type: "ADD_TODO",
-                id: id++,
-                text: inputValue,
-                completed: false,
-            })
+            addTodo(id, inputValue, false)
         }
         setInputValue('')
     }
 
     const handleToggle = (tid) => {
-        dispatch({
-            type: "TOGGLE_TODO",
-            id: tid,
-        })
+        toggleTodo(tid)
     }
 
     const handleVisibility = (e) => {
         const { value } = e.target
-        dispatch({
-            type: "SET_VISIBILITY_FILTER",
-            filter: value,
-        })
+        setVisibilityFilter(value)
     }
 
     let filtTodos = todos
@@ -75,4 +61,19 @@ const TodoPage = () => {
         </main>
     )
 }
-export default TodoPage;
+
+const mapStateToProps = (state) => {
+    console.log(state)
+    return {
+        todos: todosSelector(state),
+        visibilityFilter: visibilityFilterSelector(state)
+    }
+}
+
+const mapDispatchToProps = {
+    addTodo: addTodoAction,
+    toggleTodo: toggleTodoAction,
+    setVisibilityFilter: setVisibilityFilterAction,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoPage);
